@@ -1,5 +1,5 @@
-from MyEngineCore._math.triangle import Triangle3D
-from MyEngineCore._math.vectors import Vector3D
+from .._math.triangle import Triangle3D
+from .._math.vectors import Vector3D
 
 from BaseModule.BaseModule import mjoin
 

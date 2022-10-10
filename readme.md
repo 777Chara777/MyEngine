@@ -24,3 +24,5 @@ class myapp(mycore.Aplication):
 if __name__ == "__main__":
     myapp(600, 600).run()
 ```
+
+![Logo](icons/window.png)
