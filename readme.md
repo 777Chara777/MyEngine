@@ -7,13 +7,17 @@
 - BaseModule
 - base math
 
+### install
+
+- `git clone https://github.com/777Chara777/MyEngine.git`
+- `import MyEngine.MyEngineCore as mycore`
 
 ### how use?
 ```py
 import MyEngineCore as mycore
 
-from MyEngineCore._math.triangle import Triangle2D
-from MyEngineCore._math.vectors import Vector2D
+from MyEngine.MyEngineCore._math.triangle import Triangle2D
+from MyEngine.MyEngineCore._math.vectors import Vector2D
 
 class myapp(mycore.Aplication):
     def __init__(self, width: int, height: int, fps: int = 60, title: str = "Test game", icon: str = None):
