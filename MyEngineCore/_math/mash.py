@@ -1,4 +1,5 @@
-from .triangle import Triangle3D, Triangle2D
+from .triangle import Triangle2D, Triangle3D
+
 
 class type_mash: 
 

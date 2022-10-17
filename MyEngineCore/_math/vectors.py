@@ -1,5 +1,6 @@
 import math
 
+
 def is_eq_class(func):
     def wrepper(self, other):
         if not isinstance(other, self.__class__):

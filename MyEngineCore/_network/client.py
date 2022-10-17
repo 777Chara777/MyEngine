@@ -1,15 +1,15 @@
-import socket
 import pickle
-
+import socket
 import time
-
-from BaseModule._LogError_V3 import logerror
+from threading import Thread
 
 import BaseModule.BaseModule as bm
+from BaseModule._LogError_V3 import logerror
+
 from .module import Dopmodule as dm
+
 # import modules.Dopmodule as dm
 
-from threading import Thread
 
 list_new_functions = {}
 

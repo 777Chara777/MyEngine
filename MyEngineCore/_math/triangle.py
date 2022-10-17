@@ -1,4 +1,5 @@
-from .vectors import Vector3D, Vector2D
+from .vectors import Vector2D, Vector3D
+
 
 class Triangle3D:
     def __init__(self, point1: Vector3D, point2: Vector3D, point3: Vector3D) -> None:

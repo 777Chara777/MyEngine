@@ -1,5 +1,6 @@
 from .vectors import is_eq_class
 
+
 class Matrix:
     def __init__(self, m: int=3, n: int=3, **kargs):
 

@@ -1,7 +1,8 @@
+from BaseModule.BaseModule import mjoin
+
 from .._math.triangle import Triangle3D
 from .._math.vectors import Vector3D
 
-from BaseModule.BaseModule import mjoin
 
 class structur_object:
     def __init__(self, position: Vector3D, angle: Vector3D, *triangles: Triangle3D):
