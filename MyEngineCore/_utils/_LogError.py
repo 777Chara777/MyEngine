@@ -42,14 +42,22 @@ class Core:
     def __repr__(self) -> str:
         return f"<BaseModule._LogError_V3.Core {self.options}>"
         
-class LogError_V3():
+class Singleton(type):
+    _instanses = {}
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instanses:
+            cls._instanses[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instanses[cls]
+
+class LogError_V3(metaclass=Singleton):
     def __init__(self):
         self._core = Core()
+        self.loop = bm.AsyncLock()
         self.eventloop = asyncio.get_event_loop()
 
 
     def __repr__(self) -> str:
-        return "<BaseModule._LogError_V3 handlers=%r>" % list(self._core.handlers.values())
+        return "<BaseModule._LogError_V3 handlers=%r, hash=%s>" % (list(self._core.handlers.values()), hash(self))
 
     def add(self, file = None, format = None, color = False, defautlevel = "INFO", maxfilesize = "100 KB"): 
         if file is not None:
@@ -64,7 +72,7 @@ class LogError_V3():
         if file is not self._core.options["defautlevel"]:
             self.setlevel(defautlevel)
 
-    def setcolor(self, __color):
+    def setcolor(self, __color: bool):
         if isinstance(__color, bool):
             self._core.options["color"] = __color
     
@@ -73,7 +81,7 @@ class LogError_V3():
             self._core.options["defautformat"] = __format
         
     def setfile(self, __file: str):
-        if bm.misfile(__file) and self._core.options["dir_file_save"]:
+        if bm.misfile(__file):
             self._core.options["dir_file_save"] = __file
         else:
             raise Exception("File not found at given path '%s'" % __file)
@@ -83,11 +91,19 @@ class LogError_V3():
         if __level in TypesLevels:
             self._core.options["defautlevel"] = __level
 
+    def savelog(self):
+        "save log file in .zip"
+        file = self._core.options["dir_file_save"]
+        name = str(file).split("/")[-1]
+        with ZipFile(f"{file.replace(f'/{name}', '')}/{bm.Time(6)}-{name}.zip", "w") as newzip:
+            newzip.write(file)
+        open(file, 'w')
 
     def _log(self, __level, __options, __message, *args, **kargs) -> None:
         """Logger foramt message and save to file"""
 
         def savefile(msg):
+            # await self.loop.acquire()
             if __options["dir_file_save"] is not None:
                 
                 int_number_type: int = bm.getlist_size(str(__options["maxfilesize"]).split(" ")[1])
@@ -100,7 +116,7 @@ class LogError_V3():
 
                 with open(__options["dir_file_save"], 'a+', encoding='utf-8') as file:
                     file.write(f"{msg}\n")
-
+            # await self.loop.release()
 
         def format_message(__foramt: str, _message, level):
             """Foramt message"""
@@ -162,17 +178,16 @@ class LogError_V3():
 
     def catch(
         self,
-        exception=Exception,
+        _exception=Exception, *,
         level = "ERROR" ,
         reverse = False,
         onerror = None,
         message = "An error has occurred"):
-        """# Debug errors catch"""
 
-        if callable(exception) and (
-            not inspect.isclass(exception) or not issubclass(exception, BaseException)
+        if callable(_exception) and (
+            not inspect.isclass(_exception) or not issubclass(_exception, BaseException)
         ):
-            return self.catch()(exception)
+            return self.catch()(_exception)
 
 
         class Catcher:

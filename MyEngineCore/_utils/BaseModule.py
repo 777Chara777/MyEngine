@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 import asyncio
 
 import json
@@ -99,24 +100,33 @@ def mpause(text: str):
     print(text)
     sys.stdin.readline(1)
 
-class mdeque(object):
+class mdeque():
     def __init__(self, maxlen:int) -> None:
-        self.maxlen = maxlen
-        self.array = []  
+        self.__maxlen = maxlen
+        self.__array = []  
 
-    def __str__(self) -> str:
-        return str(self.array)
-    
     def __repr__(self) -> str:
-        return "<BaseModule.mdeque handlers=[maxlen=%s, array=%r]>" % (self.maxlen, self.array)
+        return "<BaseModule.BaseModule.mdeque handlers=[maxlen=%s, array=%r]>" % (self.__maxlen, self.__array)
     
+    def __getitem__(self, __key: int):
+        if isinstance(__key, int):
+            return self.__array[__key]
+        else:
+            raise TypeError("please use `int` instead of `%s`" % __key.__class__.__name__)
+    
+    def __setitem__(self, __key: int, __value) -> None:
+        if isinstance(__key, int):
+            self.__array[__key] = __value
+        else:
+            raise TypeError("please use `int` instead of `%s`" % __key.__class__.__name__)
+
     def append(self, __object) -> None:
-        if len(self.array) >= self.maxlen:
-            del self.array[0]
-        self.array.append(__object)     
+        if len(self.__array) >= self.__maxlen:
+            del self.__array[0]
+        self.__array.append(__object)     
 
     def converct(self) -> list:
-        return self.array
+        return self.__array
     
 
 
@@ -345,6 +355,21 @@ def zipencore(oldfile:str, filename: str) -> 'bool | None':
         except Exception as ex:
             return (False, ex)
     return None
+
+def SecTimeformat(time: int):
+    "time.time() -> type(day, hour, minute, sec)"
+    sec = int(time)
+
+    minute = sec // 60
+    hour = minute // 60
+    day = hour // 24
+
+    sec = sec % 60
+    minute = minute % 60
+    hour = hour % 24
+        
+    return (day, hour, minute, sec)
+
 def trackback_format(tb: TracebackType) -> dict:
     def traceback_get_info(tb) -> dict:
 

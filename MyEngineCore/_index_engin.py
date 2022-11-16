@@ -1,7 +1,7 @@
-from ._BaseModule import BaseModule as bm
+from ._utils import BaseModule as bm
 # from ._network.server import socket_server
 # from ._network.client import socket_client
-from ._BaseModule._LogError_V3 import logerror as logger
+from ._utils._LogError import logerror as logger
 from ._math.mash import mash_list
 from ._math.matrix import Matrix
 from ._math.triangle import Triangle2D
@@ -22,7 +22,7 @@ class Aplication(Screen):
 
         
 
-    # @logger.catch()
+    @logger.catch
     def run(self):
         while True:
             self.frame_update()
