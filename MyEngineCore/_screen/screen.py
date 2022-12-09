@@ -1,12 +1,13 @@
 import pygame as pg
 from BaseModule.BaseModule import misfile
 
-from .._math.vectors import Vector2D, Vector3D
+from .._math.vectors import Vector2D
 
 
 class _clock:
     def __init__(self) -> None:
         self.clock = pg.time.Clock()
+        pass
 
     def __repr__ (self) -> str:
         return "<screen.clock fps=%.2f>" % self.clock.get_fps()
