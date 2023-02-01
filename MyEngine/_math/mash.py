@@ -1,7 +1,7 @@
 from .triangle import Triangle2D, Triangle3D
 
 
-class type_mash: 
+class typeMash: 
 
     def __repr__(self) -> str:
         return "<_math.mash.type_mash it's how dict format >"
@@ -28,9 +28,9 @@ class type_mash:
     def keys(self):
         return self.__dict__.keys()
 
-class mash_list:
+class Mash:
     def __init__(self):
-        self.obecks = type_mash()
+        self.obecks = typeMash()
 
     def add(self, caption: str , *list_triangle: list["Triangle3D | Triangle2D"]):
         if caption not in self.obecks:

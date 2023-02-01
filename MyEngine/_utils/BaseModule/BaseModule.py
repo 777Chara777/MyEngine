@@ -20,13 +20,14 @@ from datetime import datetime
 from importlib import reload
 
 
-__all__ = (
+__all__ = [
     'mcls',
     'mplatform_',
     'misdir',
     'misfile',
     'mkdir',
     'mlistdir',
+    'mlistdir2',
     'mremove',
     'mgetlogin',
     'mgetcwd',
@@ -51,11 +52,10 @@ __all__ = (
     'Time',
     'get_size',
     'file_size',
-    'LogError',
     'load_json',
     'input_json',
     'loadall_json',
-    "trackback_format")
+    'trackback_format']
 
 def __system_info():
     return sys.platform
@@ -175,7 +175,7 @@ def Time(num: int=0):
     else:
         return "Not Find Time numbre"
 
-def get_size(start_path = '.'):
+def get_size(start_path = '.') -> str:
     """getting file weight
     * getting the weight of the form [bytes-TB, weight]"""
     def convert_bytes(num):
@@ -194,7 +194,7 @@ def getlist_size(size_: str):
     "Get list ['bytes', 'KB', 'MB', 'GB', 'TB'] -> [0, 1, 2, 3, 4]"
     return ['bytes', 'KB', 'MB', 'GB', 'TB'].index(size_)
 
-def file_size(file_path):
+def file_size(file_path) -> list:
     """getting file weight
     * getting the weight of the form [0-4, bytes-TB, weight]"""
     def convert_bytes(num):
@@ -208,7 +208,7 @@ def file_size(file_path):
         return convert_bytes(file_info.st_size)
 
 class __Module(Exception): pass
-def initModule(Module: str) -> "False | __Module":
+def initModule(Module: str) -> "bool | __Module":
     """Module initialization"""
     try:
         __import__(Module)
@@ -307,7 +307,7 @@ def listtostr(data: list) -> str:
         line+=str(x)
     return line
 
-def timeformat(time: int):  
+def timeformat(time: int) -> str:  
     date = {
         'M': 60,
         'H': 24,
@@ -485,6 +485,39 @@ def trackback_format(tb: TracebackType) -> dict:
     
     return format_traceback
 
+def memory(func):
+    """Cash the result of the function in save in file .pycash.json in __pycache__
+    
+    ```py
+    @memory
+    def sum(a, b) -> int:
+        return a + b
+
+    # Test 1 first
+    sum(15, 43) # -> result 58 for "9 sec"
+
+    # Test 2 second
+    sum(15, 43) # -> result 58 for "0.01 sec"
+    ```
+    """
+    if not misdir("./__pycache__/"):
+        mkdir("./__pycache__")
+
+    if not misfile("./__pycache__/.pycash.json"):
+        open("./__pycache__/.pycash.json", "w").write("{}")
+    
+    cache = loadall_json("./__pycache__/.pycash.json")
+    
+    def wrapper(*args, **kwargs):
+        name_function = f"{func.__name__} {str(args)} {str(kwargs)}"
+
+        if name_function not in cache:
+            cache[name_function] = func(*args, **kwargs)
+            input_json("./__pycache__/.pycash.json", cache)
+        
+        return cache[name_function]
+    
+    return wrapper
 
 class AsyncLock:
     def __init__(self) -> None:

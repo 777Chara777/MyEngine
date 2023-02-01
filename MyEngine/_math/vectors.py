@@ -25,8 +25,9 @@ def is_eq_class_v2(*args):
 #     return [ func(key) for key in other if if_(key) ]
 
 class _ObjectVector:
-    def __init__(self, **kargs) -> None:
-        self.__dict__ = kargs
+
+    def __init__(self, **kwargs) -> None:
+        self.__dict__ = kwargs
 
     def __str__(self) -> str:
         FormMessage = [ f"{key}={self.__dict__[key]}" for key in self.__dict__ ]

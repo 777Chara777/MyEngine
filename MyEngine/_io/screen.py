@@ -1,5 +1,6 @@
 import pygame as pg
-from BaseModule.BaseModule import misfile
+from .._utils.BaseModule.BaseModule import misfile
+from .._utils.BaseModule.LogError import logerror
 
 from .._math.vectors import Vector2D
 
@@ -19,10 +20,10 @@ class _clock:
         self.clock.tick(FPS)
 
 class Screen:
-    def __init__(self, width: int, height: int, fps: int=60, title: str="Test game", icon: str=None):
+    def __init__(self, width: int, height: int, fps: int=60, title: str=None, icon: str=None):
         self.size = (width, height)
         self.FPS = fps
-        self.app_title = title
+        self.app_title = title if title is not None else __file__
         self.app_icon  = icon
 
         self.clock = _clock()
@@ -33,9 +34,11 @@ class Screen:
         pg.draw.line(self.screen, color, (vec1.x,vec1.y), (vec2.x, vec2.y), c)
     
     def setup(self):
+        pg.init()
         pg.display.set_caption(self.app_title)
         if self.app_icon is not None and misfile(self.app_icon):
-            pg.display.set_icon(self.app_icon)
+            app_icon = pg.image.load(self.app_icon)
+            pg.display.set_icon(app_icon)
 
         self.screen = pg.display.set_mode(self.size)
 
@@ -50,6 +53,7 @@ class Screen:
         self.on_update()
 
         pg.display.flip()
+        pg.display.update()
         self.clock.update_tick(self.FPS)
 
 
