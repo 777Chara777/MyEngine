@@ -1,12 +1,24 @@
-from ._utils import BaseModule as bm
-# from ._network.server import socket_server
-# from ._network.client import socket_client
+from ._utils.BaseModule import BaseModule as bm
 from ._utils.BaseModule.LogError import logerror as logger
+from ._utils.ResourceManager import ResourceManager
+from ._utils.Timer import Timer
+
 from ._object import Object
+from ._camera import Camera 
+from ._world import World
+
+
+from ._io import Screen
+from ._io import Keyboard
+
 from ._math.matrix import Matrix
 from ._math.triangle import Triangle2D
 from ._math.vectors import *
-from ._io import Screen
+
+
+
+
+
 
 
 logger.load_core("Engine")
@@ -21,31 +33,55 @@ class Aplication( Screen ):
                  title: str = None, 
                  icon: str = None
                  ):
-        super().__init__(width, height, fps, title, icon) 
-
-        logger.info("__init__ Engine start (width=%s height=%s fps=%.2f title='%s' icon='%s')" % ( width, height, fps, title, icon ))
-        self._world: Object = []
-
-        self.__logick()
-
-    def start(self) -> None: ...
-
-    def __logick(self):
         
-        logger.info("open start function")
+        logger.info("__init__::Engine start (%s %s %.2f '%s' '%s')" % ( width, height, fps, title, icon ))
+
+        self._width  = width
+        self._height = height
+        self._fps    = fps
+        self._title  = title
+
+        self._showDebugInfo = False
+        
+        super().__init__(width, height, fps, title, icon)
+
+        # Inits
+
+        self._ResourceManager = ResourceManager()
+        
+        self.Camera   = Camera(width, height)
+        self.keyboard = Keyboard()
+        self.World    = World()
+
+        # call start function
+        logger.info("call start function")
         self.start()
 
-        pass
-
-
-    def DrawTriangle(self, triangle: Triangle2D, c, color):
-        _vec1, _vec2, _vec3 = triangle.getpoints()
+    def _on_update_system(self) -> None:
+        def switch_Debug():
+            self._showDebugInfo = not self._showDebugInfo
+        self.keyboard.on_press("f12", switch_Debug )
         
-        self.DrawLine(_vec1, _vec2, c, color)
-        self.DrawLine(_vec2, _vec3, c, color)
-        self.DrawLine(_vec3, _vec1, c, color)
+        self._printDebugInfo()
+
+
+    def _printDebugInfo(self) -> None:
+
+        if self._showDebugInfo:
+            text = f"Camera: {self.Camera.get_position} fps: {self.GameTicks.fps:.2f}, width/height: {self._width}/{self._height} Objects: {len(self.World._objects)}"
+
+            self.drawtext( 
+                self._ResourceManager.loadFonts("./_founts/Roboto-Regular.ttf", 24), 
+                text, (255,255,255), 
+                Vector2D(0,0) )
+
+
+
+
+    def start(self) -> None: ...
 
     @logger.catch
     def run(self):
         while True:
-            self.frame_update()
+            self._on_update_system()
+            self._updateframe()

@@ -29,6 +29,17 @@ class typeMash:
         return self.__dict__.keys()
 
 class Mash:
+    def __init__(self) -> None:
+        self.obecks = []
+
+    def add(self, *list_triangle: list["Triangle3D | Triangle2D"]):
+        self.obecks.append( list_triangle if len( list_triangle ) != 1 else list_triangle[0] )
+    
+    def free(self):
+        del self
+
+
+class Mash2:
     def __init__(self):
         self.obecks = typeMash()
 

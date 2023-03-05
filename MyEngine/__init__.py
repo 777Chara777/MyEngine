@@ -10,3 +10,5 @@ from ._math.triangle import Triangle2D, Triangle3D
 
 from ._network.client import socket_client
 from ._network.server import socket_server
+
+from ._object import ObjectNameTag, Object
