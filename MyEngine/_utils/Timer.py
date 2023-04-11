@@ -4,12 +4,17 @@ from .._utils.BaseModule.LogError import logerror
 
 logerror.load_core("Engine")
 
+__all__ = (
+    "Timer",
+    "NotFindTimer",
+)
+
 class NotFindTimer(Exception): pass
 
 class Timer:
     def __init__(self, tag) -> None:
         
-        logerror.info(f"__init__::Timer {tag=}")
+        logerror.debug(f"__init__::Timer {tag=}")
 
         self._isRunning: bool  = False
         self._startTime: float = None
@@ -35,4 +40,4 @@ class Timer:
     
     @property
     def elapsedMilliseconds(self) -> float:
-        return self.elapsedSeconds*1000
+        return self.elapsedSeconds * 1000

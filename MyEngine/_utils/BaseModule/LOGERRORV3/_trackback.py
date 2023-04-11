@@ -17,7 +17,7 @@ def get_traceback_information(tb) -> dict:
         except KeyboardInterrupt:
             raise
         except BaseException:
-            v = u'<unprintable %s object>' % type(v).__name__
+            v = u'<unprintable %s object -_->' % type(v).__name__
 
         max_length = 128
         if max_length is not None and len(v) > max_length:
@@ -75,7 +75,7 @@ def format_traceback_frame(data: dict, number: int=0) -> str:
     format_tb_str: str=''
     
     source = data["Source"]
-    format_tb_str += '%s File "%s", line %s, in %s\n    %s' % (number, data["FilePath"], data["Line"], data["Function"], source)
+    format_tb_str += '%i File "%s", line %i, in %s\n    %s' % (number, data["FilePath"], data["Line"], data["Function"], source)
     
     args:list = data["args"]
     args.reverse()
@@ -86,16 +86,23 @@ def format_traceback_frame(data: dict, number: int=0) -> str:
             newline = ""
 
             for num_arg, arg in enumerate(args):
-                _, line, func = arg
+                name_func, line, func = arg
+
+                line+=4
+                name_func_len = len(name_func)
+
+                if name_func_len != 1:
+                    name_func_value = 1 if (name_func_len % 2 == 0) else 2
+                else: name_func_value = 0
 
                 format_number = int(num_arg+1) - int(num_line+1)
 
                 if format_number == 0:
-                    newline += str(' ' * (line+4)) + f"└─ {func}"
+                    newline += str(' ' * (line+name_func_value)) + f"└─ {func}"
                 
                 elif format_number > 0:
                     newline_list = list(newline)
-                    newline_list[line+4] = "│"
+                    newline_list[line+name_func_value] = "│"
                     newline = ''.join(newline_list)
 
             
@@ -112,14 +119,14 @@ def _format_traceback(traceback: TracebackType=None, **kargs) -> dict:
         kargs["value"] = tbs.format_exception( *sys.exc_info() )[-1].replace("\n",'')
 
     format_traceback: dict={
-        "Hadler_tb": "Traceback (most recent call last):",
-        "Lists_tb": [],
-        "ErrorName_tb": kargs["value"]
+        "Header": "Engine-Traceback (most recent call last):",
+        "Description": [],
+        "ErrorCaption": kargs["value"]
     }   
 
     number = 0
     while traceback:
-        if number != 0: format_traceback["Lists_tb"].append( format_traceback_frame ( get_traceback_information(traceback), number ) )
+        if number != 0: format_traceback["Description"].append( format_traceback_frame ( get_traceback_information(traceback), number ) )
         
         number+=1
         traceback = traceback.tb_next

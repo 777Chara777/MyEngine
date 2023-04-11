@@ -7,6 +7,9 @@ class Triangle3D:
     
     def getpoints(self) -> "tuple[Vector3D, Vector3D, Vector3D]":
         return self.points
+    
+    def __iter__(self):
+        return iter(self.points)
 
     def __repr__(self) -> str:
         vec_str = ", ".join([ f"{vec.__class__.__name__}="+"{x=%s, y=%s, z=%s}" % (vec.x, vec.y, vec.z) for vec in self.points ])
@@ -18,6 +21,9 @@ class Triangle2D:
     
     def getpoints(self) -> "tuple[Vector2D, Vector2D, Vector2D]":
         return self.points
+
+    def __iter__(self):
+        return iter(self.points)
 
     def __repr__(self) -> str:
         vec_str = ", ".join([ f"{vec.__class__.__name__}="+"{x=%s, y=%s}" % (vec.x, vec.y) for vec in self.points ])

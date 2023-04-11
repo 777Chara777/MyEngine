@@ -30,10 +30,10 @@ class typeMash:
 
 class Mash:
     def __init__(self) -> None:
-        self.obecks = []
+        self.objects: "list[Triangle3D | Triangle2D]" = []
 
     def add(self, *list_triangle: list["Triangle3D | Triangle2D"]):
-        self.obecks.append( list_triangle if len( list_triangle ) != 1 else list_triangle[0] )
+        self.objects += list_triangle
     
     def free(self):
         del self

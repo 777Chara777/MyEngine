@@ -2,11 +2,18 @@ from ._math.mash import Mash
 from ._math.matrix import Matrix
 from ._math.vectors import Vector3D
 
+from ._utils.BaseModule.LogError import logerror
+
+logerror.load_core("Engine")
+
 class ObjectNameTag:
     def __init__(self, tag) -> None:
         self._name = tag
 
-    # def 
+    @property
+    def get_tag(self):
+        return self._name
+
 
 class Object:
     def __init__(self, position: Vector3D, angle: Vector3D, mash: Mash):
@@ -22,5 +29,9 @@ class Object:
     def translate(self, pos: Vector3D):
         if not isinstance(pos, Vector3D):
             raise TypeError("pos is {pos.__class__.__name__} but this is most Vector3D")
-        self.position = pos
+        self.object_position = pos
 
+    def rotate(self, angle: Vector3D):
+        if not isinstance(angle, Vector3D):
+            raise TypeError("angle is {pos.__class__.__name__} but this is most Vector3D")
+        self.object_angle = angle

@@ -5,11 +5,10 @@ def findmessage(mesasge: str, __findtext: str) -> bool:
         return True
     return False
 
-def findmessage_2(mesasge: str, __findtext: str) -> "int | bool":
-    """return number or False"""
+def findmessage_2(mesasge: str, __findtext: str) -> "int | None":
+    """return number or None"""
     if mesasge.find(__findtext) != -1:
         return mesasge.find(__findtext)
-    return False
 
 
 def _getframe(depth, number=0):

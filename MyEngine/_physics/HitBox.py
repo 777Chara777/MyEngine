@@ -1,0 +1,3 @@
+
+class HitBox():
+    pass
