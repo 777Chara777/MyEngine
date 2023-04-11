@@ -6,10 +6,10 @@
 - use python module [PyGame](https://pypi.org/project/pygame/)
 - create 2D or 3D games in Windows
 
-### How to create a Window and render cube
+### How to create a Window and render Cube
 ```py
 # python 3.9 => 3.11
-import MyEngine as core
+import MyEngine as mycore
 
 from MyEngine._math.vectors import Vector3D as vec3
 
