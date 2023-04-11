@@ -6,35 +6,84 @@
 - use python module [PyGame](https://pypi.org/project/pygame/)
 - create 2D or 3D games in Windows
 
-### How to create a Window and create Triangle
+### How to create a Window and render cube
 ```py
 # python 3.9 => 3.11
-import MyEngine as mycore
+import MyEngine as core
 
-from MyEngine._math.triangle import Triangle2D
-from MyEngine._math.vectors import Vector2D
+from MyEngine._math.vectors import Vector3D as vec3
 
-class myapp(mycore.Aplication):
-    def __init__(self, width: int, height: int, fps: int = 60, title: str = "Test game", icon: str = None):
+
+mycore.logger.load_core("Engine")
+
+class TestCube(core.Aplication):
+    def __init__(self, width: int, height: int, fps: int = 60, title: str = None, icon: str = None):
         super().__init__(width, height, fps, title, icon)
 
-    def start(self):
-        # first call
-        self.FPS = 20 # I edit fps with 60 to 20
+    def setup(self):
+        self.object_1 = self.World.loadBody( mycore.ObjectNameTag("Object"), "./obj/cube.obj")
+        self.Camera.translate(vec3(0,0,-10))
 
+        self.player = self.Scripts.loadScripts("scripts.player_controller", "PlayerController")
+
+
+    @mycore.logger.catch( message="Error in Engine while :(", ignore_exceptions=(SystemExit, KeyboardInterrupt,), onerror=lambda _: exit(0) )
     def on_update(self):
-        # update window title
-        self.update_title("FPS: %.2f" % (self.clock.get_fps())) 
+        self.player.move()
 
-        # draw a triangle on the window
-        self.DrawTriangle( Triangle2D(
-                Vector2D(200,100), 
-                Vector2D(400,100), 
-                Vector2D(200,200)
-            ), 1, (255,255,255) ) 
-        
+
 if __name__ == "__main__":
-    myapp(600, 600).run()
+    TestCube(900,700, title="Test Cube").run()
+```
+
+scripts.player_controller
+```py
+from MyEngine._math.vectors import Vector3D as vec3
+from MyEngine._world import ObjectNameTag
+
+from Source import TestCube
+
+class Test:
+    def __init__(self, core) -> None:
+        self._core: "TestCube" = core
+
+    def move(self):
+
+        if self._core.keyboard.on_press("w"):
+            self._core.Camera.position += vec3(0, 0, 0.1)
+
+        if self._core.keyboard.on_press("s"):
+            self._core.Camera.position -= vec3(0, 0, 0.1)
+
+        if self._core.keyboard.on_press("a"):
+            self._core.Camera.position -= vec3(0.1, 0, 0)
+
+        if self._core.keyboard.on_press("d"):
+            self._core.Camera.position += vec3(0.1, 0, 0)
+
+
+        if self._core.keyboard.on_press("space"):
+            self._core.Camera.position -= vec3(0, 0.1, 0)
+
+        if self._core.keyboard.on_press("left shift"):
+            self._core.Camera.position += vec3(0, 0.1, 0)
+
+
+        if self._core.keyboard.on_press("right"):
+            self._core.Camera.angle += vec3(0.1, 0, 0)
+
+        if self._core.keyboard.on_press("left"):
+            self._core.Camera.angle -= vec3(0.1, 0, 0)
+
+        if self._core.keyboard.on_press("up"):
+            self._core.Camera.angle -= vec3(0, 0.1, 0)
+
+        if self._core.keyboard.on_press("down"):
+            self._core.Camera.angle += vec3(0, 0.1, 0)
+
+def setup(core):
+    core.add_Script(Test)
+
 ```
 
 ![Window](icons/window.png)
