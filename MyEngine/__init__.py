@@ -8,10 +8,11 @@ from ._math.mash import Mash
 from ._math.matrix import Matrix
 from ._math.triangle import Triangle2D, Triangle3D
 
-from ._network.client import socket_client
-from ._network.server import socket_server
+from ._network.client import SocketClient
+from ._network.server import SocketServer
 
 from ._object import ObjectNameTag, Object
+
 
 __all__ = (
     "Aplication",
@@ -21,8 +22,8 @@ __all__ = (
     "Mash",
     "Matrix",
     "Triangle2D", "Triangle3D",
-    "socket_client",
-    "socket_server",
+    "SocketClient",
+    "SocketServer",
     "ObjectNameTag",
     "Object",
 )

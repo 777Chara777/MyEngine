@@ -10,6 +10,10 @@ from ._camera import Camera
 from ._world import World
 from ._render import Render
 
+from .Consts import (
+    DEBUG_MENU,
+    DEBUG_ON
+)
 
 from ._io import Screen
 from ._io import Keyboard
@@ -50,7 +54,7 @@ class Aplication( Screen ):
         self._fps    = fps
         self._title  = title
 
-        self._showDebugInfo = False
+        self._showDebugInfo = DEBUG_MENU
         self._showDebugInfo_time = sys_time.time()
         
         super().__init__(width, height, fps, title, icon)
@@ -71,7 +75,7 @@ class Aplication( Screen ):
 
     def _on_update_system(self) -> None:
         def switch_Debug():
-            if (sys_time.time() - self._showDebugInfo_time) > 0.5:
+            if (sys_time.time() - self._showDebugInfo_time) > 0.5 and DEBUG_ON:
                 self._showDebugInfo_time = sys_time.time()
                 self._showDebugInfo = not self._showDebugInfo
         self.keyboard.on_press("f12", switch_Debug )
@@ -81,7 +85,7 @@ class Aplication( Screen ):
 
     def _printDebugInfo(self) -> None:
 
-        if not self._showDebugInfo:
+        if not self._showDebugInfo and DEBUG_ON:
             return
 
         self.drawtext( 
@@ -93,7 +97,7 @@ class Aplication( Screen ):
         
         self.drawtext( 
             self._ResourceManager.loadFonts("./_founts/Roboto-Regular.ttf", 23), 
-            f" width/height: {self._width}/{self._height}, Objects: {len(self.World._objects)}, Scripts: {self.Scripts.lenScripts()}",
+            f" width/height: {self._width}/{self._height}, Objects: {len(self.World)}, Scripts: {len(self.Scripts)}",
             (255,255,255),
             Vector2D(270,0) )
         
