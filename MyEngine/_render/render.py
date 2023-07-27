@@ -64,19 +64,19 @@ class Render:
     #     return (x.value, y.value)
 
     def render(self):
-        for object in self._World._objects:
-            object_ = self._World.importBody(ObjectNameTag(object))
-            if object_ is None:
-                return
+        # for object in self._World.get_objects:
+        object_ = self._World.importBody(ObjectNameTag("Object"))
+        if object_ is None:
+            return
 
-            object_position: "Vector3D"             = object_.object_position
-            object_angle:    "Vector3D"             = object_.object_angle
+        object_position: "Vector3D"             = object_.object_position
+        object_angle:    "Vector3D"             = object_.object_angle
 
-            object_mash_triangles: list[Triangle3D] = object_.object_mash.objects
+        object_mash_triangles: list[Triangle3D] = object_.object_mash.objects
 
-            for edge in object_mash_triangles:
-                triangle = list(edge)
-                p1 = Triangle2D( *[Vector2D(*self.project(object_position + pos)) for pos in triangle] ) 
+        for edge in object_mash_triangles:
+            triangle = list(edge)
+            p1 = Triangle2D( *[Vector2D(*self.project(object_position + pos)) for pos in triangle] ) 
 
-                if dot(self._Camera.get_position, GetTriangleNormal( *triangle )) > 0:
-                    self._core.DrawTriangle(p1, 1, (255, 255, 255))
+            if dot(self._Camera.get_position, GetTriangleNormal( *triangle )) > 0:
+                self._core.DrawTriangle(p1, 1, (255, 255, 255))
