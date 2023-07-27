@@ -8,7 +8,7 @@
 
 ### How to create a Window and render Cube
 ```py
-# python 3.9 => 3.11
+# python 3.9 >= 3.11
 import MyEngine as mycore
 
 from MyEngine._math.vectors import Vector3D as vec3
@@ -16,12 +16,12 @@ from MyEngine._math.vectors import Vector3D as vec3
 
 mycore.logger.load_core("Engine")
 
-class TestCube(core.Aplication):
+class TestCube(mycore.Aplication):
     def __init__(self, width: int, height: int, fps: int = 60, title: str = None, icon: str = None):
         super().__init__(width, height, fps, title, icon)
 
     def setup(self):
-        self.object_1 = self.World.loadBody( mycore.ObjectNameTag("Object"), "./obj/cube.obj")
+        self.object = self.World.loadBody( mycore.ObjectNameTag("Object"), "./obj/cube.obj" )
         self.Camera.translate(vec3(0,0,-10))
 
         self.player = self.Scripts.loadScripts("scripts.player_controller", "PlayerController")
