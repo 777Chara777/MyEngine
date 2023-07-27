@@ -1,3 +1,6 @@
+import sys
+import os
+
 from .._utils.BaseModule.LogError import logerror
 from .._utils.BaseModule import BaseModule as bm
 
@@ -38,7 +41,7 @@ class Script:
         self._core = core
 
     @staticmethod
-    def lenScripts():
+    def __len__():
         return len(_scripts)
 
     def getFunctions(self, tag: str) -> "ScriptFunctons | None":
@@ -52,6 +55,10 @@ class Script:
             logerror.warn("This tag (%s) is already in use, please try another one." % tag)
             return
         
+        path = os.path.abspath(module)
+        module = path.split("\\")[-1].replace(".py", "")
+        sys.path.append("/".join(path.split("\\")[:-1]))
+
         data = bm.initModule(module)
         if data["Type"]:
             data_module = data["Module"]
