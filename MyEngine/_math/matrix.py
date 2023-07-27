@@ -44,6 +44,9 @@ class Matrix:
 
     # магические элементы
 
+    def __hash__(self) -> int:
+        return hash(self.__matrix_array)
+    
     @is_eq_class
     def __mul__(self, other: "Matrix"):
         m = len(self.__matrix_array)  # a: m × n
@@ -140,8 +143,6 @@ class Matrix:
     def __isub__(self, other: "Matrix"):
         return self.__sub__(other)
 
-    def __repr__(self) -> str:
-        return "<Matrix size=%s, array=%s>" % ( f"{len(self.__matrix_array)}x{len(self.__matrix_array[0])}", self.__matrix_array)
 
     def __str__(self) -> str:
         def fun() -> str:
@@ -159,6 +160,15 @@ class Matrix:
 
         return "<Matrix size=%s, array={\n%s}>" % ( f"{len(self.__matrix_array)}x{len(self.__matrix_array[0])}", fun())
 
+    def __repr__(self) -> str:
+        return "<Matrix size=%s, hesh=%i, hex=%s, combined_hash=%i, array=%s>" % ( 
+            f"{len(self.__matrix_array)}x{len(self.__matrix_array[0])}", 
+            self.__hash__(),         # \
+            hex( self.__hash__() ),  #  > hash
+            self.combined_hash(),    # /
+            self.__matrix_array
+        )
+
     def __getitem__(self, __value):
         return self.__matrix_array[__value]
 
@@ -166,3 +176,6 @@ class Matrix:
 
     def copy(self) -> "Matrix":
         return Matrix(array=self.__matrix_array)
+
+    def combined_hash(self) -> int:
+        return self.__hash__() ^ hash(id(self))

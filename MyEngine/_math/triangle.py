@@ -1,13 +1,37 @@
 from .vectors import Vector2D, Vector3D
 
+__all__ = (
+    "Triangle3D",
+    "Triangle2D",
+)
 
 class Triangle3D:
     def __init__(self, point1: Vector3D, point2: Vector3D, point3: Vector3D) -> None:
-        self.points: tuple = (point1, point2, point3)
+        self.points: "tuple[Vector3D, Vector3D, Vector3D]" = (point1, point2, point3,)
     
     def getpoints(self) -> "tuple[Vector3D, Vector3D, Vector3D]":
         return self.points
     
+    def __add__(self, other: Vector3D):
+        if not isinstance(other, Vector3D):
+            raise ValueError(f"type `{other}` is not `Vector3D`!")
+        return self.__class__(*[vec + other for vec in self.points ])
+
+    def __iadd__(self, other: Vector3D):
+        return self.__add__(other)
+
+    def __sub__(self, other: Vector3D):
+        if not isinstance(other, Vector3D):
+            raise ValueError(f"type `{other}` is not `Vector3D`!")
+        return self.__class__(*[vec - other for vec in self.points ])
+            
+
+        
+    
+    def __isub__(self, other: Vector3D):
+        return self.__sub__(other)
+    
+
     def __iter__(self):
         return iter(self.points)
 
@@ -21,6 +45,24 @@ class Triangle2D:
     
     def getpoints(self) -> "tuple[Vector2D, Vector2D, Vector2D]":
         return self.points
+
+    
+    def __add__(self, other: Vector2D):
+        if not isinstance(other, Vector2D):
+            raise ValueError(f"type `{other}` is not `Vector2D`!")
+        return self.__class__(*[vec + other for vec in self.points ])
+    
+    def __iadd__(self, other: Vector2D):
+        return self.__add__(other)
+
+    def __sub__(self, other: Vector2D):
+        if not isinstance(other, Vector2D):
+            raise ValueError(f"type `{other}` is not `Vector2D`!")
+        return self.__class__(*[vec - other for vec in self.points ])
+    
+    def __isub__(self, other: Vector2D):
+        return self.__sub__(other)
+    
 
     def __iter__(self):
         return iter(self.points)
