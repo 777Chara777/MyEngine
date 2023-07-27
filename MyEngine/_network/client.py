@@ -27,8 +27,8 @@ def add_function(**kargs):
     return wrepper
 
 class call_info:
-    def __init__(self, self_server: "socket_client", type, data):
-        self.self_server: "socket_client" = self_server
+    def __init__(self, self_server: "SocketClient", type, data):
+        self.self_server: "SocketClient" = self_server
         self.type_data: str = type
         self.data: dict = data
 
@@ -38,7 +38,7 @@ class call_info:
     def __repr__(self) -> str:
         return "<client.call_info type=%s, data=%s>" % (self.type_data, self.data)
 
-class socket_client:
+class SocketClient:
 
     def __init__(self, ip: str='localhost', port: int=8888) -> None:
         self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

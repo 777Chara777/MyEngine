@@ -26,8 +26,8 @@ def add_function(**kargs):
     return wrepper
 
 class call_info:
-    def __init__(self, self_server: "socket_server", type, data, connect):
-        self.self_server: "socket_server" = self_server
+    def __init__(self, self_server: "SocketServer", type, data, connect):
+        self.self_server: "SocketServer" = self_server
         self.type_data: str = type
         self.data: dict = data
         self.connect: socket.socket = connect
@@ -44,7 +44,7 @@ class call_info:
     async def send_all(self, type: str, value: dict={}) -> tuple:
         return await self.self_server.add_task ( self.self_server.send_all(type, value) )
 
-class socket_server():
+class SocketServer():
     def __init__(self, ip: str='localhost', port: int=8888, settings=None) -> None:
 
         logerror.debug("Create __init__ file")
