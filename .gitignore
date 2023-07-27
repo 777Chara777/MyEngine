@@ -1,3 +1,12 @@
+# The BackRooms Files ignore
+.vscode/
+tests/
+Game Engine.txt
+start.bat
+test*.py
+Source.md
+*.py?
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -144,8 +153,6 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Ignored extensions
-*.py1
 
 # PyCharm
 #  JetBrains specific template is maintainted in a separate JetBrains.gitignore that can
